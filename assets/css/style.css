@@ -50,7 +50,7 @@ main{
     height:15%;
     
 }
-#start {
+.start {
     justify-content:center;
     text-align: center;
     margin-top: 5%;
@@ -65,16 +65,16 @@ main{
     color: white;
     background-color: rgb(0,128,128);
 }
-#view-scores{
+.view-scores{
     position: absolute;
     align-items: center;
     color: #20b2aa;
     margin-right: auto;
 }
-#timer{
+.timer{
     margin: 10px;
 }
-#clock {
+.clock {
     align-items: center;
     position:relative;
     color: black;
