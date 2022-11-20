@@ -33,6 +33,15 @@ var problems = {
     ask: "test",
     answer: [1, 2, 3, 4],
   },
+
+  q3: {
+    ask: "test",
+    answer: [1, 2, 3, 4],
+  },
+  q4: {
+    ask: "test",
+    answer: [1, 2, 3, 4],
+  },
 };
 var spot = function (left) {
   var r_i = Math.floor(Math.random() * left);
@@ -63,6 +72,7 @@ var quiz = document.querySelector(".game");
 var scores = document.querySelector(".view-scores");
 var q_keys = Object.values(problems);
 var q_num = 0;
+var u_right = document.querySelector(".correct");
 var options = document.querySelector(".options").children;
 var question = document.querySelector(".ask");
 var answers = Array.from(options);
@@ -74,11 +84,16 @@ document.querySelector(".options").addEventListener("click", function (event) {
   if (event.target.dataset.datatrue == "1") {
     console.log("correct chosen");
     score += 1;
-    q_num += 1;
+    q_num++;
+    u_right.textContent = "Correct!";
+    u_right.setAttribute("style", "display:block");
     game_questions();
   } else {
     console.log("false");
+    u_right.textContent = "Wrong!";
+    u_right.setAttribute("style", "display:block");
     score -= 1;
+    q_num++;
   }
 });
 function game_questions() {
