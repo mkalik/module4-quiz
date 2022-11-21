@@ -13,7 +13,7 @@
     </header>
     <main>
     <div class = "start">Click to start</div>
-    <section class = "game" style = "display:none">
+    <section class = "quiz" style = "display:none">
         <h1 class = "ask"></h1>
         <h2 class = "options" style = "list-style:numbered">
             <div data-true = '0'></div>
@@ -25,10 +25,27 @@
     </section>
     
     <section class="log-scores" style = 'display:none'>
+        <h1>All Done!</h1>
         <h2 class="game-score"></h2>
+        <form name = 'info_form'>
+            <label for="user_name">please enter your initials</label>
+            <input name = "user_name" id = 'user_name' type="text">
+            <input type="button" value = "Submit" onclick = "log_user()">
+        </form>
+     </section>
+
+     <section class="all-scores" style = 'display:none'>
+            <h2>scores</h2>
+            <ul class = 'l_score'></ul>
+            <div>
+                <input type="button" value="restart">
+                <input type="button" value="clear">
+            </div>
+        </section>
+
         
     
-    </section>
+
     </main>
     <script src= "assets/js/script.js"></script>
 </body>
