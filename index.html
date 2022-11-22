@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>JavaScript quiz</title>
-    <link rel= "stylesheet" href= "assets/css/style.css">
+    <link rel= "stylesheet" href= "style.css">
 </head>
 <body>
     <header>
@@ -27,18 +27,17 @@
     <section class="log-scores" style = 'display:none'>
         <h1>All Done!</h1>
         <h2 class="game-score"></h2>
-        <form name = 'info_form'>
-            <label for="user_name">please enter your initials</label>
-            <input name = "user_name" id = 'user_name' type="text">
-            <input type="button" value = "Submit" onclick = "log_user()">
-        </form>
+        <div name = '.info_form'>
+            <input class='user-name' type="text" placeholder="Enter your initials">
+            <button type="button" onclick= "log_user()">Submit</button>
+        </div>
      </section>
 
      <section class="all-scores" style = 'display:none'>
             <h2>scores</h2>
             <ul class = 'l_score'></ul>
             <div>
-                <input type="button" value="restart">
+                <input type="button" value="return">
                 <input type="button" value="clear">
             </div>
         </section>
@@ -47,6 +46,6 @@
     
 
     </main>
-    <script src= "assets/js/script.js"></script>
+    <script src= "script.js"></script>
 </body>
 </html>

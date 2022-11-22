@@ -10,17 +10,18 @@ function countdown() {
   time--;
   clock.textContent--;
   if (time <= 0) {
+    quiz.setAttribute("style", "display:none");
     clock.textContent = " ";
-
-    start.style.display = "block";
     q_num = 0;
     time = 6;
-    console.log(game_start);
+    // console.log(game_start);
     clearInterval(check);
     if (game_start) {
       console.log("game_end");
-      start.setAttribute("style", "display:none");
       game_end();
+    } else {
+      console.log("view scores clicked");
+      view_scores();
     }
   }
 }
@@ -36,17 +37,81 @@ var problems = {
     ],
   },
   q2: {
-    ask: "test",
-    answer: [1, 2, 3, 4],
+    ask: "where should a java script tag be placed in html?",
+    answer: [
+      "within the body",
+      "within the head",
+      "before the body but below the head",
+      "below the body but above the closing html tag",
+    ],
   },
 
   q3: {
-    ask: "test",
-    answer: [1, 2, 3, 4],
+    ask: "what method is considered unsafe when removing elements from an array?",
+    answer: ["delete", "splice", "pop", "shift"],
   },
   q4: {
-    ask: "test",
-    answer: [1, 2, 3, 4],
+    ask: "are semicolons necessary at the end of each line in javascript?",
+    answer: [
+      "no but they are a good practice",
+      "yes as code wont work without them",
+      "only at the end of function declarations",
+      "only if a variable is declared",
+    ],
+  },
+  q5: {
+    ask: "how do you declare a variable in javascript?",
+    answer: [
+      "var name_of_var",
+      "type name_of_var",
+      "make name_of_var",
+      "init name_of_var",
+    ],
+  },
+  q6: {
+    ask: "can javascript change html elements?",
+    answer: [
+      "absolutely",
+      "definitely not",
+      "only if the element is a div",
+      "only when javascript option has been checked",
+    ],
+  },
+  q7: {
+    ask: "how do you declare an if statement?",
+    answer: [
+      "if(condition){'code'}",
+      "if{'code'}(condition)",
+      "{'code'}if(condition)",
+      "{'code'}(condition)if",
+    ],
+  },
+  q8: {
+    ask: "what is the purpose of an else statement?",
+    answer: [
+      "alternate code to run when 'if' statement doesnt run",
+      "get rid of random data",
+      "a means of switching to a different line of code",
+      "no purpose",
+    ],
+  },
+  q9: {
+    ask: "how can you access an element html element in javascript?",
+    answer: [
+      "document.querySelector('x')",
+      "document.getItem.HTML('x')",
+      "HTML.grab.element('x')",
+      "var x = HTML.element('x')",
+    ],
+  },
+  q10: {
+    ask: "is javascript required to build a site?",
+    answer: [
+      "only when you want to implement complex websites",
+      "its a neccessity, cant be done without it",
+      "only when there isnt a css file specified",
+      "not at all, its but an extraenous tool of no importance",
+    ],
   },
 };
 var spot = function (left) {
@@ -69,7 +134,7 @@ function new_choices(size) {
       options[i].dataset.datatrue = "1";
     }
     c_opt.splice(index, 1);
-    console.log("index: " + index, "choices: " + choices);
+    // console.log("index: " + index, "choices: " + choices);
   }
 
   return choices;
@@ -91,23 +156,37 @@ var picks;
 var choices;
 var game_start = false;
 var user_name;
-// var quiz_options = document.querySelector(".quiz-options");
+var leaderboard = 0;
+var name_score;
 
+// var quiz_options = document.querySelector(".quiz-options");
+scores.addEventListener("click", function (event) {
+  event.preventDefault(event);
+  start.setAttribute("style", "display: none");
+  // console.log(localStorage.length);
+  console.log(localStorage);
+  if (localStorage.length == 0) {
+    alert("no scores to display!");
+    window.location.reload();
+  } else {
+    quiz_end.setAttribute("style", "display:none");
+    view_scores();
+  }
+});
 start.addEventListener("click", function (event) {
   event.preventDefault();
   start.setAttribute("style", "display: none");
-
   game();
   timer();
 });
 
 all_scores.addEventListener("click", function (event) {
   event.preventDefault();
-  if (event.target.value == "restart") {
-    game();
-    timer();
+  game_start = false;
+  if (event.target.value == "return") {
     console.log("local storage size: " + localStorage.length);
     all_scores.setAttribute("style", "display:none");
+    start.setAttribute("style", "display:block");
   }
   if (event.target.value == "clear") {
     while (l_scores.firstChild) {
@@ -115,45 +194,40 @@ all_scores.addEventListener("click", function (event) {
     }
 
     localStorage.clear();
-
-    console.log("local storage size: " + localStorage.length);
     alert("scores cleared");
-    all_scores.setAttribute("style", "display:none");
-    start.setAttribute("style", "display:block");
+    window.location.reload();
   }
+  // console.log("local storage size: " + localStorage.length);
+  all_scores.setAttribute("style", "display:none");
 });
 
 multiple_choice.addEventListener("click", function (event) {
   event.preventDefault();
   if (event.target.dataset.datatrue == "1") {
-    console.log("correct chosen");
+    // console.log("correct chosen");
     score += 1;
     u_right.textContent = "Correct!";
     u_right.setAttribute("style", "display:block");
+    q_num++;
   } else {
-    console.log("false");
+    // console.log("false");
     u_right.textContent = "Wrong!";
     u_right.setAttribute("style", "display:block");
     score -= 1;
+    q_num++;
   }
-  q_num++;
   if (q_num == q_keys.length) {
     game_end();
   } else {
     game_questions();
   }
 });
-
 function game_questions() {
-  console.log("q_keys size: " + q_keys.length, "q_num: " + q_num);
-  if (q_num == q_keys.length) {
-    game_end();
-  }
   question.textContent = q_keys[q_num].ask;
   picks = new_choices(answers.length);
-  console.log("picks: " + picks);
+  // console.log("picks: " + picks);
   for (var i = 0; i < 4; i++) {
-    console.log("picks = " + picks[i]);
+    // console.log("picks = " + picks[i]);
     if (picks[i] == q_keys[q_num].answer[0]) {
       options[i].dataset.datatrue = "1";
     }
@@ -162,6 +236,7 @@ function game_questions() {
 }
 function game() {
   // quiz_options.setAttribute("style", "display:none");
+  start.setAttribute("style", "display:none");
   u_right.setAttribute("style", "display:none");
   all_scores.setAttribute("style", "display:none");
   console.log("game start");
@@ -176,27 +251,35 @@ function game_end() {
   time = 0;
   quiz.setAttribute("style", "display: none");
   quiz_end.setAttribute("style", "display:block");
-  console.log("score: " + score);
+  // console.log("score: " + score);
   quiz_end.children[1].textContent = "your score: " + score;
 }
 function log_user() {
   quiz_end.setAttribute("style", "display:none");
-  user_name = document.forms["info_form"]["user_name"].value;
+  var user_name = document.querySelector(".user-name").value;
   console.log(user_name);
   localStorage.setItem(user_name, score);
-  view_scores();
+  new_score(user_name, score);
 }
-function new_score(elements) {
+function new_score(u, s) {
   var new_score = document.createElement("li");
-  var l_name = localStorage.key(elements);
-  new_score.textContent = l_name + "   " + localStorage.getItem(l_name);
+  new_score.textContent = u + "   " + s;
   l_scores.appendChild(new_score);
+  leaderboard++;
+  view_scores();
 }
 function view_scores() {
   var local_size = localStorage.length;
+  console.log(JSON.stringify(localStorage));
   console.log("local_size: " + local_size);
-  for (var i = 0; i < local_size; i++) {
-    new_score(i);
+  console.log("leaderboard: " + leaderboard);
+  console.log(l_scores.childElementCount);
+  if (l_scores.childElementCount == 0) {
+    for (var i = localStorage.length - 1; i >= 0; i--) {
+      var l_key = localStorage.key(i);
+      new_score(l_key, localStorage.getItem(l_key));
+    }
   }
+
   all_scores.setAttribute("style", "display:block");
 }
