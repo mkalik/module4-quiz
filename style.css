@@ -5,7 +5,7 @@
     --text:rgb(245,245,245);
 }
 body{
-    background-color: rgb(245,245,245);
+    background-color: rgb(200,205,205);
 }
 header {
     display:flex;
@@ -52,8 +52,11 @@ main{
     margin-right:auto;
     margin-top: 5vh;
 }
+.options div:hover{
+    background: var(--button);
+}
 .options div{
-    text-align:center;
+    text-align: center;
     margin:5px;
     margin-left:auto;
     margin-right:auto;
@@ -66,7 +69,8 @@ main{
     height:15%;
     
 }
-.start {
+.info{
+    display:flex;
     justify-content:center;
     text-align: center;
     margin-top: 5%;
@@ -74,12 +78,28 @@ main{
     margin-right: auto;
     display: block;
     border-radius: 20px;
-    border: 2px solid rgb(240,255,255);
+    width: 60%;
+    height: 20%;
+    font-size: 14px;
+    color: white;
+    background-color: var(--button);
+}
+.start {
+    text-align: center;
+    margin-top: 5%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    border-radius: 20px;
+    border: 2px solid var(--button);
     width: 100px;
     height: 50px;
     font-size: 20px;
     color: white;
     background-color: var(--button);
+}
+.start:hover{
+    border: 2px solid var(--br_quiz);
 }
 .view-scores{
     position: absolute;
@@ -204,4 +224,8 @@ padding-left: 0px;
     display:flex;
     justify-content:center;
 
+}
+.correct{
+    text-align:center;
+    padding:3px;
 }

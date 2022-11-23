@@ -1,4 +1,5 @@
 //script for quiz
+//could add some more bug fixes
 var clock = document.querySelector(".timer");
 var time = 30;
 var check;
@@ -11,6 +12,7 @@ function update_clock() {
 }
 function countdown() {
   time--;
+  console.log(score);
   update_clock();
   if (time <= 0) {
     quiz.setAttribute("style", "display:none");
@@ -153,19 +155,20 @@ var answers = Array.from(options);
 var quiz_end = document.querySelector(".log-scores");
 var all_scores = document.querySelector(".all-scores");
 var l_scores = document.querySelector(".l_score");
+var info = document.querySelector(".info");
 var q_num;
 var score;
 var picks;
 var choices;
 var game_start = false;
-var user_name;
 var leaderboard = 0;
-var name_score;
 
 // var quiz_options = document.querySelector(".quiz-options");
 scores.addEventListener("click", function (event) {
   event.preventDefault(event);
   start.setAttribute("style", "display: none");
+  info.setAttribute("style", "display: none");
+
   // console.log(localStorage.length);
   console.log(localStorage);
   if (localStorage.length == 0) {
@@ -173,12 +176,18 @@ scores.addEventListener("click", function (event) {
     window.location.reload();
   } else {
     quiz_end.setAttribute("style", "display:none");
+    quiz.setAttribute("style", "display:none");
+    game_start = false;
+    time = 0;
+
     view_scores();
   }
 });
 start.addEventListener("click", function (event) {
   event.preventDefault();
   start.setAttribute("style", "display: none");
+  info.setAttribute("style", "display: block");
+  info.setAttribute("style", "display: none");
   game();
   timer(time);
 });
@@ -190,6 +199,7 @@ all_scores.addEventListener("click", function (event) {
     console.log("local storage size: " + localStorage.length);
     all_scores.setAttribute("style", "display:none");
     start.setAttribute("style", "display:block");
+    info.setAttribute("style", "display: block");
   }
   if (event.target.value == "clear") {
     while (l_scores.firstChild) {
@@ -211,12 +221,12 @@ multiple_choice.addEventListener("click", function (event) {
     // console.log("correct chosen");
     score += 1;
     u_right.textContent = "Correct!";
-    u_right.setAttribute("style", "display:block");
+    u_right.setAttribute("style", "display:block; background:#00ff7f");
     q_num++;
   } else {
     // console.log("false");
     u_right.textContent = "Wrong!";
-    u_right.setAttribute("style", "display:block");
+    u_right.setAttribute("style", "display:block; background:#fe2712");
     // score -= 1;
     time -= 5;
     if (time < 0) {
@@ -248,6 +258,7 @@ function game_questions() {
 function game() {
   // quiz_options.setAttribute("style", "display:none");
   start.setAttribute("style", "display:none");
+  info.setAttribute("style", "display: none");
   u_right.setAttribute("style", "display:none");
   all_scores.setAttribute("style", "display:none");
   console.log("game start");
@@ -279,13 +290,35 @@ function log_user() {
   quiz_end.setAttribute("style", "display:none");
   var user_name = document.querySelector(".user-name").value;
   console.log(user_name);
+  if (user_name === "") {
+    user_name = "[blank]";
+  }
+  if (localStorage.getItem(user_name) != null) {
+    var sec = new Date();
+    user_name = user_name + " (old score: " + score + ")";
+    console.log(user_name);
+  }
   localStorage.setItem(user_name, score);
   new_score(user_name, score);
 }
 function new_score(u, s) {
   var new_score = document.createElement("li");
-  new_score.textContent = u + " | " + s;
-  l_scores.appendChild(new_score);
+  console.log(new_score);
+  if (leaderboard < localStorage.length) {
+    console.log("if ran");
+    for (var i = leaderboard; i < localStorage.length; i++) {
+      console.log("inside for loop");
+      var l_key = localStorage.key(i);
+      console.log("l_key: " + l_key);
+      var old_score = document.createElement("li");
+      console.log("old user: " + l_key);
+      old_score.textContent = l_key + " | " + localStorage.getItem(l_key);
+      l_scores.appendChild(old_score);
+    }
+  } else {
+    new_score.textContent = u + " | " + s;
+    l_scores.appendChild(new_score);
+  }
   leaderboard++;
   view_scores();
 }
@@ -295,11 +328,9 @@ function view_scores() {
   console.log("local_size: " + local_size);
   console.log("leaderboard: " + leaderboard);
   console.log(l_scores.childElementCount);
-  if (l_scores.childElementCount == 0) {
-    for (var i = localStorage.length - 1; i >= 0; i--) {
-      var l_key = localStorage.key(i);
-      new_score(l_key, localStorage.getItem(l_key));
-    }
+  if (leaderboard == 0) {
+    console.log("if ran in view_scores");
+    new_score();
   }
 
   all_scores.setAttribute("style", "display:block");
