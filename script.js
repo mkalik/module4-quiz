@@ -1,19 +1,22 @@
 //script for quiz
 var clock = document.querySelector(".timer");
-var time;
+var time = 30;
 var check;
-function timer() {
+function timer(time) {
   clock.textContent = time;
   check = setInterval(countdown, 1000);
 }
+function update_clock() {
+  clock.innerHTML = time;
+}
 function countdown() {
   time--;
-  clock.textContent--;
+  update_clock();
   if (time <= 0) {
     quiz.setAttribute("style", "display:none");
     clock.textContent = " ";
     q_num = 0;
-    time = 6;
+    time = 30;
     // console.log(game_start);
     clearInterval(check);
     if (game_start) {
@@ -21,9 +24,9 @@ function countdown() {
       game_end();
     } else {
       console.log("view scores clicked");
-      view_scores();
     }
   }
+  console.log("time");
 }
 var start = document.querySelector(".start");
 var problems = {
@@ -177,7 +180,7 @@ start.addEventListener("click", function (event) {
   event.preventDefault();
   start.setAttribute("style", "display: none");
   game();
-  timer();
+  timer(time);
 });
 
 all_scores.addEventListener("click", function (event) {
@@ -196,13 +199,14 @@ all_scores.addEventListener("click", function (event) {
     localStorage.clear();
     alert("scores cleared");
     window.location.reload();
+    all_scores.setAttribute("style", "display:none");
   }
   // console.log("local storage size: " + localStorage.length);
-  all_scores.setAttribute("style", "display:none");
 });
 
 multiple_choice.addEventListener("click", function (event) {
   event.preventDefault();
+  console.log(time);
   if (event.target.dataset.datatrue == "1") {
     // console.log("correct chosen");
     score += 1;
@@ -213,7 +217,14 @@ multiple_choice.addEventListener("click", function (event) {
     // console.log("false");
     u_right.textContent = "Wrong!";
     u_right.setAttribute("style", "display:block");
-    score -= 1;
+    // score -= 1;
+    time -= 5;
+    if (time < 0) {
+      time = "";
+      game_end();
+    }
+    update_clock();
+    console.log("time after wrong: " + time);
     q_num++;
   }
   if (q_num == q_keys.length) {
@@ -241,18 +252,28 @@ function game() {
   all_scores.setAttribute("style", "display:none");
   console.log("game start");
   score = 0;
-  time = 10;
+  time = 30;
   q_num = 0;
   game_start = true;
   quiz.setAttribute("style", "display: block");
   game_questions();
 }
 function game_end() {
+  var game_over = document.querySelector(".quiz-over");
   time = 0;
+  if (q_num == 10) {
+    game_over.innerHTML = "All Done!";
+  } else {
+    game_over.innerHTML = "Game over!";
+  }
+
   quiz.setAttribute("style", "display: none");
   quiz_end.setAttribute("style", "display:block");
   // console.log("score: " + score);
   quiz_end.children[1].textContent = "your score: " + score;
+}
+function clear_field() {
+  document.querySelector(".user-name").value = "";
 }
 function log_user() {
   quiz_end.setAttribute("style", "display:none");
@@ -263,7 +284,7 @@ function log_user() {
 }
 function new_score(u, s) {
   var new_score = document.createElement("li");
-  new_score.textContent = u + "   " + s;
+  new_score.textContent = u + " | " + s;
   l_scores.appendChild(new_score);
   leaderboard++;
   view_scores();

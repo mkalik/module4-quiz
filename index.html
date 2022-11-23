@@ -25,11 +25,11 @@
     </section>
     
     <section class="log-scores" style = 'display:none'>
-        <h1>All Done!</h1>
+        <h1 class="quiz-over"></h1>
         <h2 class="game-score"></h2>
         <div name = '.info_form'>
             <input class='user-name' type="text" placeholder="Enter your initials">
-            <button type="button" onclick= "log_user()">Submit</button>
+            <button type="button" onclick= "log_user();clear_field()">Submit</button>
         </div>
      </section>
 
@@ -38,7 +38,7 @@
             <ul class = 'l_score'></ul>
             <div>
                 <input type="button" value="return">
-                <input type="button" value="clear">
+                <input type="button" value="clear" >
             </div>
         </section>
 
