@@ -4,9 +4,12 @@
 
 ## Description:
 
-a quiz for javascript that can store previous scores.
+a quiz for javascript that can store previous scores
 
-TODO: add live link and screenshot
+!(info screen for quiz)[images/info_ss.png]
+!(quiz options)[images/quiz_ss.png]
+!(end of quiz screen)[images/end_ss.png]
+!(scores screen)[images/scores_ss.png]
 
 ## 1.Installation:
 

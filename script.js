@@ -220,13 +220,16 @@ all_scores.addEventListener('click', function (event) {
 multiple_choice.addEventListener('click', function (event) {
     event.preventDefault();
     console.log(time);
+    q_num++;
+    if (q_num == q_keys.length) {
+        game_end();
+    }
     if (event.target.dataset.datatrue == '1') {
         // console.log("correct chosen");
         score += 1;
         u_right.textContent = 'Correct!';
         u_right.setAttribute('style', 'display:block; background:#00ff7f');
         game_questions();
-        q_num++;
     }
     if (event.target.dataset.datatrue == '0') {
         // console.log("false");
@@ -234,6 +237,7 @@ multiple_choice.addEventListener('click', function (event) {
         u_right.setAttribute('style', 'display:block; background:#fe2712');
         // score -= 1;
         time -= 5;
+
         if (time < 0) {
             time = '';
             game_end();
@@ -242,10 +246,6 @@ multiple_choice.addEventListener('click', function (event) {
         game_questions();
         update_clock();
         console.log('time after wrong: ' + time);
-        q_num++;
-    }
-    if (q_num == q_keys.length) {
-        game_end();
     }
 });
 //functions for the game
