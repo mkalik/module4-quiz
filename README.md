@@ -4,7 +4,7 @@
 
 ## Description:
 
-a quiz for javascript that can store previous scores
+a quiz for javascript that can store previous scores. another test
 
 ![info screen for quiz](images/info_ss.png )
 ![ quiz options ](images/quiz_ss.png)
